@@ -45,14 +45,16 @@ const ld = {
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)} />
 
   {d.cover && (
-    <section class="hero">
-      <img src={img(d.cover, 1800)} alt="" loading="eager" />
-      <div class="idx">{idx}</div>
-      <div class="wrap">
-        <span class="eyebrow">{REGIONS[d.region]} · {DIFFICULTY[d.difficulty].label} · {d.distanceKm} km</span>
-        <h1>{d.title}</h1>
-      </div>
-    </section>
+    <div class="wrap">
+      <section class="hero">
+        <div class="copy">
+          <div class="idx">{idx}</div>
+          <span class="eyebrow">{REGIONS[d.region]} · {DIFFICULTY[d.difficulty].label} · {d.distanceKm} km</span>
+          <h1>{d.title}</h1>
+        </div>
+        <img class="mono cutout" src={img(d.cover, 1400)} alt="" loading="eager" />
+      </section>
+    </div>
   )}
 
   <div class="wrap">
@@ -80,10 +82,10 @@ const ld = {
               const linked = w.place && placeIds.has(w.place);
               return (
                 <li class={w.type}>
-                  <div class="dot" title={t.label}>{t.icon}</div>
+                  <div class="dot" title={t.label}>{String(i + 1).padStart(2, '0')}<span class="ico">{t.icon}</span></div>
                   <div>
                     <div class="name">
-                      {i + 1}. {linked ? <a href={`/places/${w.place}/`}>{w.name}</a> : w.name}
+                      {linked ? <a href={`/places/${w.place}/`}>{w.name}</a> : w.name}
                       <span class="leg"> · {t.label}</span>
                     </div>
                     {w.note && <div class="note">{w.note}</div>}
