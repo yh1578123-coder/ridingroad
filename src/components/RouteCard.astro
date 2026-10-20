@@ -11,7 +11,7 @@ const duration = hours ? `${hours}시간${mins ? ` ${mins}분` : ''}` : `${mins}
 ---
 <a class="card" href={`/routes/${route.id}/`} data-region={d.region} data-difficulty={d.difficulty}>
   <div class="thumb">
-    {d.cover && <img src={img(d.cover, 800)} alt="" loading="lazy" />}
+    {d.cover && <img class="mono" src={img(d.cover, 800)} alt="" loading="lazy" />}
     <span class="region">{REGIONS[d.region]}</span>
   </div>
   <div class="body">
