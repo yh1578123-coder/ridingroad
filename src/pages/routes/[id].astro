@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import RouteMap from '../../components/RouteMap.astro';
+import RouteCard from '../../components/RouteCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { REGIONS, DIFFICULTY, WAYPOINT_TYPES, SITE } from '../../site';
+
+export async function getStaticPaths() {
+  const routes = await getCollection('routes', ({ data }) => !data.draft);
+  return routes.map((route) => ({ params: { id: route.id }, props: { route } }));
+}
+
+const { route } = Astro.props;
+const d = route.data;
+const { Content } = await render(route);
+
+const hours = Math.floor(d.durationMin / 60);
+const mins = d.durationMin % 60;
+const duration = hours ? `${hours}시간${mins ? ` ${mins}분` : ''}` : `${mins}분`;
+
+// 다른 루트 추천 (같은 지역 우선)
+const all = (await getCollection('routes', ({ data }) => !data.draft)).filter((r) => r.id !== route.id);
+const related = [...all.filter((r) => r.data.region === d.region), ...all.filter((r) => r.data.region !== d.region)].slice(0, 3);
+
+// 경유지에 연결된 장소 글이 실제로 있는지 확인
+const placeIds = new Set((await getCollection('places')).map((p) => p.id));
+
+// 구글 검색용 구조화 데이터
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.summary,
+  datePublished: d.publishedAt.toISOString(),
+  dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
+  author: { '@type': 'Organization', name: SITE.name },
+  publisher: { '@type': 'Organization', name: SITE.name },
+};
+---
+<Base title={d.title} description={d.summary} image={d.cover} type="article">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)} />
+
+  <div class="wrap">
+    <header class="route-head">
+      <div class="tags" style="margin-bottom:10px">
+        <span class="tag">{REGIONS[d.region]}</span>
+        <span class:list={['diff', d.difficulty]}>{DIFFICULTY[d.difficulty].label}</span>
+        {d.roundTrip && <span class="tag">순환 코스</span>}
+      </div>
+      <h1>{d.title}</h1>
+      <p style="color:var(--ink-2);max-width:720px">{d.summary}</p>
+      <div class="meta">
+        <span>총 거리 <b>{d.distanceKm} km</b></span>
+        <span>주행 시간 <b>{duration}</b></span>
+        <span>경유지 <b>{d.waypoints.length}곳</b></span>
+        {d.bestSeason.length > 0 && <span>추천 계절 <b>{d.bestSeason.join(' · ')}</b></span>}
+      </div>
+    </header>
+
+    <div class="route-layout">
+      <div>
+        <RouteMap waypoints={d.waypoints} />
+
+        <section style="margin-top:28px">
+          <h2>경유지</h2>
+          <ol class="waypoints">
+            {d.waypoints.map((w, i) => {
+              const t = WAYPOINT_TYPES[w.type];
+              const linked = w.place && placeIds.has(w.place);
+              return (
+                <li class={w.type}>
+                  <div class="dot" title={t.label}>{t.icon}</div>
+                  <div>
+                    <div class="name">
+                      {i + 1}. {linked ? <a href={`/places/${w.place}/`}>{w.name}</a> : w.name}
+                      <span class="leg"> · {t.label}</span>
+                    </div>
+                    {w.note && <div class="note">{w.note}</div>}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+
+        <AdSlot />
+
+        <article class="prose" style="margin-top:28px">
+          <Content />
+        </article>
+      </div>
+
+      <aside class="side">
+        <div class="panel">
+          <h3>코스 정보</h3>
+          <dl class="kv">
+            <dt>지역</dt><dd>{REGIONS[d.region]}</dd>
+            <dt>난이도</dt><dd>{DIFFICULTY[d.difficulty].label} — {DIFFICULTY[d.difficulty].desc}</dd>
+            <dt>거리</dt><dd>{d.distanceKm} km</dd>
+            <dt>주행</dt><dd>{duration} (휴식 제외)</dd>
+            <dt>형태</dt><dd>{d.roundTrip ? '순환 (출발지 복귀)' : '편도'}</dd>
+            {d.bestSeason.length > 0 && <><dt>계절</dt><dd>{d.bestSeason.join(', ')}</dd></>}
+          </dl>
+          {d.tags.length > 0 && <div class="tags" style="margin-top:12px">{d.tags.map((t) => <span class="tag">{t}</span>)}</div>}
+        </div>
+
+        <div class="panel">
+          <h3>내비에 넣기</h3>
+          <p style="font-size:.9rem;color:var(--ink-2);margin:0 0 10px">경유지를 순서대로 내비게이션에 입력하세요.</p>
+          <ol style="margin:0;padding-left:1.2em;font-size:.92rem">
+            {d.waypoints.map((w) => <li>{w.name}</li>)}
+          </ol>
+        </div>
+
+        <AdSlot shape="rect" />
+      </aside>
+    </div>
+
+    {related.length > 0 && (
+      <section class="section">
+        <div class="section-head"><h2>이어서 달릴 만한 루트</h2></div>
+        <div class="grid">{related.map((r) => <RouteCard route={r} />)}</div>
+      </section>
+    )}
+  </div>
+</Base>

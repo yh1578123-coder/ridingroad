@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import RouteCard from '../../components/RouteCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { REGIONS, DIFFICULTY } from '../../site';
+
+const routes = (await getCollection('routes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const regions = [...new Set(routes.map((r) => r.data.region))];
+---
+<Base title="바이크 투어 루트" description="수도권·강원 바이크 투어 코스를 지역·난이도별로 모았습니다. 지도, 경유지, 거리, 소요시간 포함.">
+  <div class="wrap">
+    <div class="page-head">
+      <h1>바이크 투어 루트</h1>
+      <p>지역과 난이도로 골라보세요. 모든 코스는 지도와 경유지, 휴게 포인트가 함께 정리되어 있습니다.</p>
+    </div>
+
+    <div class="filters" id="region-filters" role="group" aria-label="지역 필터">
+      <button class="chip" data-region="all" aria-pressed="true">전체</button>
+      {regions.map((r) => <button class="chip" data-region={r} aria-pressed="false">{REGIONS[r]}</button>)}
+    </div>
+    <div class="filters" id="diff-filters" role="group" aria-label="난이도 필터">
+      <button class="chip" data-difficulty="all" aria-pressed="true">모든 난이도</button>
+      {Object.entries(DIFFICULTY).map(([k, v]) => <button class="chip" data-difficulty={k} aria-pressed="false" title={v.desc}>{v.label}</button>)}
+    </div>
+
+    <div class="grid" id="route-grid">
+      {routes.map((r) => <RouteCard route={r} />)}
+    </div>
+    <p class="empty" id="route-empty" hidden>조건에 맞는 루트가 아직 없습니다.</p>
+
+    <div style="margin-top:32px"><AdSlot /></div>
+  </div>
+
+  <script>
+    const state = { region: 'all', difficulty: 'all' };
+    const cards = [...document.querySelectorAll<HTMLElement>('#route-grid .card')];
+    const empty = document.getElementById('route-empty')!;
+
+    function apply() {
+      let shown = 0;
+      for (const c of cards) {
+        const ok = (state.region === 'all' || c.dataset.region === state.region) &&
+          (state.difficulty === 'all' || c.dataset.difficulty === state.difficulty);
+        c.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      }
+      empty.hidden = shown > 0;
+    }
+
+    for (const key of ['region', 'difficulty'] as const) {
+      const group = document.getElementById(key === 'region' ? 'region-filters' : 'diff-filters')!;
+      group.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLElement>('.chip');
+        if (!btn) return;
+        state[key] = btn.dataset[key]!;
+        group.querySelectorAll('.chip').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        apply();
+      });
+    }
+  </script>
+</Base>
