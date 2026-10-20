@@ -8,6 +8,7 @@ difficulty: normal
 tags: ["고개", "라이더 카페", "닭갈비", "당일", "호수"]
 bestSeason: ["봄", "여름", "가을"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1781036725018-51e4499354c6"
 publishedAt: 2026-10-20
 waypoints:
   - name: "소양강댐 정상 주차장"

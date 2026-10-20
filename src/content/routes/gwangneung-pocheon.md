@@ -8,6 +8,7 @@ difficulty: easy
 tags: ["숲길", "라이더 카페", "반나절", "야간 가능", "입문"]
 bestSeason: ["봄", "여름", "가을"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1764006942825-2439134edc2b"
 publishedAt: 2026-10-20
 waypoints:
   - name: "카페 라드 (RAD)"

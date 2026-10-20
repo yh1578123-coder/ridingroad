@@ -8,6 +8,7 @@ difficulty: hard
 tags: ["고원", "전망", "1박 추천", "바다", "여름"]
 bestSeason: ["여름", "가을"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1771427795503-74fa80babf5d"
 publishedAt: 2026-10-20
 waypoints:
   - name: "횡계 시내"

@@ -8,6 +8,7 @@ difficulty: normal
 tags: ["강변", "와인딩", "라이더 카페", "당일", "카페"]
 bestSeason: ["봄", "여름", "가을"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1749453841347-2cda97af2526"
 publishedAt: 2026-10-20
 waypoints:
   - name: "양평 만남의광장 (양만장)"

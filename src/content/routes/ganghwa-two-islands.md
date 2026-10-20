@@ -8,6 +8,7 @@ difficulty: normal
 tags: ["섬", "바다", "낙조", "라이더 카페", "당일"]
 bestSeason: ["봄", "가을"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1779636447852-9febc139fb47"
 publishedAt: 2026-10-20
 waypoints:
   - name: "백로드 (100ROAD) 바이크카페"

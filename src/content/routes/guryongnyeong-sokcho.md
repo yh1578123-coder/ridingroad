@@ -8,6 +8,7 @@ difficulty: hard
 tags: ["고개", "단풍", "바다", "1박 추천", "가을"]
 bestSeason: ["가을", "여름"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1764862024029-aafc09b47fb5"
 publishedAt: 2026-10-20
 waypoints:
   - name: "홍천 내면 창촌 (내면사무소 앞)"

@@ -8,6 +8,7 @@ difficulty: easy
 tags: ["강변", "당일", "입문", "탠덤 추천", "카페"]
 bestSeason: ["봄", "가을"]
 roundTrip: false
+cover: "https://images.unsplash.com/photo-1657536547010-6badac27ab1b"
 publishedAt: 2026-10-20
 waypoints:
   - name: "팔당댐 전망대"

@@ -8,6 +8,7 @@ difficulty: normal
 tags: ["와인딩", "고개", "순환", "반나절"]
 bestSeason: ["봄", "여름", "가을"]
 roundTrip: true
+cover: "https://images.unsplash.com/photo-1773880365757-d52c92a4f258"
 publishedAt: 2026-10-20
 waypoints:
   - name: "양수리 (두물머리 입구)"
