@@ -13,6 +13,7 @@ export const REGIONS: Record<string, string> = {
   gyeonggi: '경기',
   gangwon: '강원',
   seoul: '서울',
+  incheon: '인천·강화',
   chungcheong: '충청',
   gyeongsang: '경상',
   jeolla: '전라',

@@ -17,7 +17,7 @@ const routes = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),                       // 목록에 보이는 한 줄 소개
-    region: z.enum(['seoul', 'gyeonggi', 'gangwon', 'chungcheong', 'gyeongsang', 'jeolla', 'jeju']),
+    region: z.enum(['seoul', 'gyeonggi', 'incheon', 'gangwon', 'chungcheong', 'gyeongsang', 'jeolla', 'jeju']),
     distanceKm: z.number(),                    // 총 거리
     durationMin: z.number(),                   // 순수 주행 시간(분)
     difficulty: z.enum(['easy', 'normal', 'hard']).default('normal'),
@@ -38,7 +38,7 @@ const places = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    region: z.enum(['seoul', 'gyeonggi', 'gangwon', 'chungcheong', 'gyeongsang', 'jeolla', 'jeju']),
+    region: z.enum(['seoul', 'gyeonggi', 'incheon', 'gangwon', 'chungcheong', 'gyeongsang', 'jeolla', 'jeju']),
     category: z.enum(['cafe', 'food', 'view', 'rest', 'fuel', 'etc']).default('etc'),
     lat: z.number(),
     lng: z.number(),
