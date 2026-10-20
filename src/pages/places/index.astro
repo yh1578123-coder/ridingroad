@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PlaceCard from '../../components/PlaceCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const places = (await getCollection('places', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<Base title="라이더를 위한 장소" description="바이크 주차, 휴게, 전망, 식사 — 라이더 시점에서 정리한 투어 중 들를 만한 곳.">
+  <div class="wrap">
+    <div class="page-head">
+      <h1>라이더를 위한 장소</h1>
+      <p>바이크 세우기 편한지, 헬멧 들고 들어가도 되는지, 라이더 시점에서 정리했습니다.</p>
+    </div>
+    <div class="grid">{places.map((p) => <PlaceCard place={p} />)}</div>
+    <div style="margin-top:32px"><AdSlot /></div>
+  </div>
+</Base>

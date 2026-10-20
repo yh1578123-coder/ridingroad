@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import RouteMap from '../../components/RouteMap.astro';
+import RouteCard from '../../components/RouteCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { REGIONS } from '../../site';
+
+export async function getStaticPaths() {
+  const places = await getCollection('places', ({ data }) => !data.draft);
+  return places.map((place) => ({ params: { id: place.id }, props: { place } }));
+}
+const { place } = Astro.props;
+const d = place.data;
+const { Content } = await render(place);
+
+// 이 장소를 경유하는 루트
+const routes = (await getCollection('routes', ({ data }) => !data.draft))
+  .filter((r) => r.data.waypoints.some((w) => w.place === place.id));
+const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전망', rest: '휴게', fuel: '주유', etc: '기타' };
+---
+<Base title={d.title} description={d.summary} image={d.cover} type="article">
+  <div class="wrap">
+    <header class="route-head">
+      <div class="tags" style="margin-bottom:10px">
+        <span class="tag">{REGIONS[d.region]}</span><span class="tag">{CAT[d.category]}</span>
+      </div>
+      <h1>{d.title}</h1>
+      <p style="color:var(--ink-2);max-width:720px">{d.summary}</p>
+    </header>
+
+    <div class="route-layout">
+      <div>
+        <RouteMap waypoints={[{ name: d.title, lat: d.lat, lng: d.lng, type: 'view' }]} id="place-map" />
+        <article class="prose" style="margin-top:28px"><Content /></article>
+      </div>
+      <aside class="side">
+        <div class="panel">
+          <h3>기본 정보</h3>
+          <dl class="kv">
+            {d.address && <><dt>주소</dt><dd>{d.address}</dd></>}
+            {d.parking && <><dt>주차</dt><dd>{d.parking}</dd></>}
+            {d.hours && <><dt>시간</dt><dd>{d.hours}</dd></>}
+          </dl>
+          <p style="margin:12px 0 0;font-size:.88rem">
+            <a style="color:var(--accent-ink);font-weight:600" href={`https://map.kakao.com/link/map/${encodeURIComponent(d.title)},${d.lat},${d.lng}`} target="_blank" rel="noopener">카카오맵에서 열기 ↗</a>
+          </p>
+        </div>
+        <AdSlot shape="rect" />
+      </aside>
+    </div>
+
+    {routes.length > 0 && (
+      <section class="section">
+        <div class="section-head"><h2>이 장소를 지나는 루트</h2></div>
+        <div class="grid">{routes.map((r) => <RouteCard route={r} />)}</div>
+      </section>
+    )}
+  </div>
+</Base>
