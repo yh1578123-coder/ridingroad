@@ -9,6 +9,10 @@ address: "경기 김포시 월곶면 월하로 100"
 parking: "매장 앞 바이크 주차"
 hours: "~02:00 (심야 영업)"
 tags: ["라이더 카페", "야간", "핫도그", "반려동물 동반"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Munsusansung.jpg/1280px-Munsusansung.jpg"
+coverNote: "주변 풍경 — 백로드에서 10분, 문수산성"
+coverCredit: "Nhy239210 · CC BY-SA 4.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:Munsusansung.jpg"
 publishedAt: 2026-10-20
 ---
 

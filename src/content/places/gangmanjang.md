@@ -9,6 +9,10 @@ address: "인천 강화군 교동면 대룡안길54번길 24"
 parking: "입구 바이크 전용 주차 공간. 자동차는 대룡시장 공영주차장"
 hours: "평일 10:00~15:00, 주말 09:00~16:00 (이른 마감 주의)"
 tags: ["라이더 카페", "비빔밥", "섬", "점심"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/%EB%8C%80%EB%A3%A1%EC%8B%9C%EC%9E%A5.jpg/1280px-%EB%8C%80%EB%A3%A1%EC%8B%9C%EC%9E%A5.jpg"
+coverNote: "주변 풍경 — 강만장 바로 옆 교동 대룡시장 입구"
+coverCredit: "HelloMyUniverse · CC BY-SA 4.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:%EB%8C%80%EB%A3%A1%EC%8B%9C%EC%9E%A5.jpg"
 publishedAt: 2026-10-20
 ---
 

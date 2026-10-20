@@ -9,6 +9,10 @@ address: "경기 포천시 내촌면 금강로 2354 1층"
 parking: "무료 주차, 넉넉함"
 hours: "월·수~금 14:00~23:00, 주말 10:00~24:00 (화요일 확인 필요)"
 tags: ["라이더 카페", "셀프 세차", "정비", "핫도그"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/%EA%B4%91%EB%A6%89.JPG/1280px-%EA%B4%91%EB%A6%89.JPG"
+coverNote: "주변 풍경 — 광릉숲길의 광릉 홍살문"
+coverCredit: "Shrhd25 · Public domain · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:%EA%B4%91%EB%A6%89.JPG"
 publishedAt: 2026-10-20
 ---
 

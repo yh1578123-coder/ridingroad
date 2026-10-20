@@ -9,6 +9,10 @@ address: "인천 강화군 삼산면 삼산북로 4"
 parking: "매장 앞 주차. 주말 오전엔 바이크로 가득 참"
 hours: "평일 09:00~20:00, 주말 08:00~20:00 (L.O 19:30)"
 tags: ["라이더 카페", "오션뷰", "섬", "반려동물 동반"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/%EC%84%9D%EB%AA%A8%EB%8C%80%EA%B5%90.jpg/1280px-%EC%84%9D%EB%AA%A8%EB%8C%80%EA%B5%90.jpg"
+coverNote: "주변 풍경 — 블랙바트 앞으로 이어지는 석모대교"
+coverCredit: "ChongDae · CC BY-SA 3.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:%EC%84%9D%EB%AA%A8%EB%8C%80%EA%B5%90.jpg"
 publishedAt: 2026-10-20
 ---
 

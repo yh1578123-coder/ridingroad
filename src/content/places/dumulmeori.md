@@ -9,6 +9,10 @@ address: "경기 양평군 양서면 양수리"
 parking: "공영주차장 유료. 바이크는 입구 쪽 자투리 공간 이용 가능"
 hours: "상시 개방"
 tags: ["전망", "일출", "강변"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/20221019_%EC%96%91%EC%88%98%EB%A6%AC_%EB%91%90%EB%AC%BC%EB%A8%B8%EB%A6%AC%28Dumulmeori%2C_Yangsu-ri%29_03.jpg/1280px-20221019_%EC%96%91%EC%88%98%EB%A6%AC_%EB%91%90%EB%AC%BC%EB%A8%B8%EB%A6%AC%28Dumulmeori%2C_Yangsu-ri%29_03.jpg"
+coverNote: "두물머리 느티나무와 남한강"
+coverCredit: "S h y numis · CC BY-SA 4.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:20221019_%EC%96%91%EC%88%98%EB%A6%AC_%EB%91%90%EB%AC%BC%EB%A8%B8%EB%A6%AC(Dumulmeori,_Yangsu-ri)_03.jpg"
 publishedAt: 2026-10-20
 ---
 

@@ -8,6 +8,10 @@ lng: 127.79083
 address: "강원 춘천시 동면 가락재로 177"
 parking: "마당 주차. 클럽 모임 날은 수십 대"
 tags: ["라이더 카페", "한옥", "바비큐", "와인딩 입구"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Soyang_River_Dam_231207.jpg/1280px-Soyang_River_Dam_231207.jpg"
+coverNote: "주변 풍경 — 느만장에서 20분, 소양강댐"
+coverCredit: "Youngjin · CC BY-SA 4.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:Soyang_River_Dam_231207.jpg"
 publishedAt: 2026-10-20
 ---
 

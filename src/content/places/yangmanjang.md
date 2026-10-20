@@ -9,6 +9,10 @@ address: "경기 양평군 양서면 국수리 391-5 (6번 국도)"
 parking: "넓은 휴게소 주차장. 주말·공휴일 오전 7~10시 혼잡"
 hours: "편의점 24시, 셀프주유소 운영"
 tags: ["집결지", "휴게소", "주유", "24시"]
+cover: "https://images.unsplash.com/photo-1768410318398-fcd1dc09dfc8"
+coverNote: "참고 이미지 — 주말 아침 라이더 집결 분위기"
+coverCredit: "Unsplash"
+coverCreditUrl: "https://unsplash.com"
 publishedAt: 2026-10-20
 ---
 

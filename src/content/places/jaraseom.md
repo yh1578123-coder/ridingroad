@@ -9,6 +9,10 @@ address: "경기 가평군 가평읍 달전리"
 parking: "대형 무료 주차장. 바이크 주차 여유"
 hours: "상시 개방 (행사 기간 제외)"
 tags: ["휴식", "강변", "캠핑"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Bukhangang_%28%EB%B6%81%ED%95%9C%EA%B0%95%29_-_panoramio.jpg/1280px-Bukhangang_%28%EB%B6%81%ED%95%9C%EA%B0%95%29_-_panoramio.jpg"
+coverNote: "주변 풍경 — 자라섬을 감싸는 북한강"
+coverCredit: "골뱅이 · CC BY-SA 3.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:Bukhangang_(%EB%B6%81%ED%95%9C%EA%B0%95)_-_panoramio.jpg"
 publishedAt: 2026-10-20
 ---
 

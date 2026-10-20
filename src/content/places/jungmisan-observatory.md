@@ -8,6 +8,10 @@ lng: 127.4520
 address: "경기 양평군 옥천면 중미산로"
 parking: "천문대 입구 공터. 주말엔 바이크 10대 이상 모임"
 tags: ["와인딩", "고개", "쉼터"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Peak_of_Yumyeong_Mountain.JPG/1280px-Peak_of_Yumyeong_Mountain.JPG"
+coverNote: "주변 풍경 — 이웃 봉우리 유명산 정상"
+coverCredit: "G43 · CC BY 3.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:Peak_of_Yumyeong_Mountain.JPG"
 publishedAt: 2026-10-20
 ---
 

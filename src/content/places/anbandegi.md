@@ -9,6 +9,10 @@ address: "강원 강릉시 왕산면 대기리"
 parking: "전망대 아래 비포장 주차장. 경사져 있어 평평한 자리 골라 세울 것"
 hours: "상시 개방 (겨울철 진입로 결빙 시 통제)"
 tags: ["고원", "전망", "일출", "은하수"]
+cover: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/%EB%8C%80%EA%B4%80%EB%A0%B9.jpg/1280px-%EB%8C%80%EA%B4%80%EB%A0%B9.jpg"
+coverNote: "주변 풍경 — 대관령 고원의 풍력발전단지"
+coverCredit: "Taehoon Kang · CC BY 2.0 · Wikimedia Commons"
+coverCreditUrl: "https://commons.wikimedia.org/wiki/File:%EB%8C%80%EA%B4%80%EB%A0%B9.jpg"
 publishedAt: 2026-10-20
 ---
 

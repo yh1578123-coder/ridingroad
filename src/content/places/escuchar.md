@@ -9,6 +9,10 @@ address: "경기 남양주시 수동면 남가로 1522-3 104·105호"
 parking: "매장 앞 주차"
 hours: "~23:00"
 tags: ["카페", "와인딩 입구", "개방형", "수제 쿠키"]
+cover: "https://images.unsplash.com/photo-1773880366059-5d47d88c4e6d"
+coverNote: "참고 이미지 — 축령산으로 오르는 숲길 분위기"
+coverCredit: "Unsplash"
+coverCreditUrl: "https://unsplash.com/photos/1773880366059-5d47d88c4e6d"
 publishedAt: 2026-10-20
 ---
 
