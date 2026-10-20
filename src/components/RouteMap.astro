@@ -1,0 +1,80 @@
+---
+/**
+ * 루트 지도. 경유지 좌표를 받아 Leaflet(OpenStreetMap) 위에 그립니다.
+ * 도로를 따라가는 경로선은 OSRM 공개 서버에서 받아오고, 실패하면 경유지를 직선으로 잇습니다.
+ */
+interface Waypoint { name: string; lat: number; lng: number; type: string; note?: string }
+interface Props { waypoints: Waypoint[]; id?: string }
+const { waypoints, id = 'route-map' } = Astro.props;
+const payload = JSON.stringify(waypoints);
+---
+<div id={id} class="map" data-waypoints={payload} role="img" aria-label="루트 지도"></div>
+<p class="map-note" id={`${id}-note`}>지도 불러오는 중…</p>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+
+  type WP = { name: string; lat: number; lng: number; type: string; note?: string };
+  const ICONS: Record<string, string> = { start: '🏁', via: '📍', rest: '☕', food: '🍜', view: '🏞️', fuel: '⛽', end: '🎯' };
+
+  function haversine(a: WP, b: WP) {
+    const R = 6371, toRad = (d: number) => (d * Math.PI) / 180;
+    const dLat = toRad(b.lat - a.lat), dLng = toRad(b.lng - a.lng);
+    const s = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(s));
+  }
+
+  function init(el: HTMLElement) {
+    const wps: WP[] = JSON.parse(el.dataset.waypoints || '[]');
+    const note = document.getElementById(el.id + '-note');
+    if (!wps.length) { if (note) note.textContent = '표시할 경유지가 없습니다.'; return; }
+
+    const map = L.map(el, { scrollWheelZoom: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    const pts: [number, number][] = [];
+    wps.forEach((w, i) => {
+      const edge = w.type === 'start' || w.type === 'end';
+      const icon = L.divIcon({
+        className: 'rr-pin',
+        html: `<div style="width:34px;height:34px;border-radius:50%;background:#fff;border:2px solid ${edge ? '#e8542a' : '#4a5568'};display:grid;place-items:center;font-size:16px;box-shadow:0 2px 6px rgba(0,0,0,.25)">${ICONS[w.type] || '📍'}</div>`,
+        iconSize: [34, 34], iconAnchor: [17, 17], popupAnchor: [0, -18],
+      });
+      L.marker([w.lat, w.lng], { icon })
+        .addTo(map)
+        .bindPopup(`<b>${i + 1}. ${w.name}</b>${w.note ? `<br><span style="color:#555">${w.note}</span>` : ''}`);
+      pts.push([w.lat, w.lng]);
+    });
+    map.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
+
+    if (wps.length < 2) { if (note) note.textContent = '지도: OpenStreetMap'; return; }
+
+    // 직선 폴백을 먼저 그리고, 도로 경로가 오면 교체
+    const fallback = L.polyline(pts, { color: '#e8542a', weight: 4, opacity: 0.6, dashArray: '6 8' }).addTo(map);
+    const straight = wps.slice(1).reduce((s, w, i) => s + haversine(wps[i], w), 0);
+
+    const coords = wps.map((w) => `${w.lng},${w.lat}`).join(';');
+    const url = `https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`;
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => {
+        const r = data?.routes?.[0];
+        if (!r) throw new Error('no route');
+        const latlngs = r.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]] as [number, number]);
+        map.removeLayer(fallback);
+        L.polyline(latlngs, { color: '#1d1d1b', weight: 7, opacity: 0.35 }).addTo(map);
+        L.polyline(latlngs, { color: '#e8542a', weight: 4, opacity: 0.95 }).addTo(map);
+        map.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40] });
+        if (note) note.textContent = `도로 기준 약 ${Math.round(r.distance / 1000)} km · 지도: OpenStreetMap, 경로: OSRM. 실제 주행 경로와 다를 수 있습니다.`;
+      })
+      .catch(() => {
+        if (note) note.textContent = `경유지를 직선으로 연결한 개략도입니다 (직선거리 약 ${Math.round(straight)} km).`;
+      });
+  }
+
+  document.querySelectorAll<HTMLElement>('.map[data-waypoints]').forEach(init);
+</script>

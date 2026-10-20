@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { REGIONS } from '../site';
+interface Props { place: CollectionEntry<'places'> }
+const { place } = Astro.props;
+const d = place.data;
+const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전망', rest: '휴게', fuel: '주유', etc: '기타' };
+---
+<a class="card" href={`/places/${place.id}/`} data-region={d.region}>
+  <div class="thumb">
+    {d.cover && <img src={d.cover} alt="" loading="lazy" />}
+    <span class="region">{REGIONS[d.region]} · {CAT[d.category]}</span>
+  </div>
+  <div class="body">
+    <h3>{d.title}</h3>
+    <p class="summary">{d.summary}</p>
+    <div class="tags">{d.tags.slice(0, 3).map((t) => <span class="tag">{t}</span>)}</div>
+  </div>
+</a>
