@@ -25,6 +25,9 @@ const routes = defineCollection({
     bestSeason: z.array(z.string()).default([]), // 예: ["봄", "가을"]
     roundTrip: z.boolean().default(false),     // 출발지로 돌아오는 코스인지
     cover: z.string().optional(),              // 대표 이미지 경로 (public/ 기준)
+    coverNote: z.string().optional(),          // 이미지 설명 (예: '주변 풍경: 석모대교')
+    coverCredit: z.string().optional(),        // 출처·저작자·라이선스
+    coverCreditUrl: z.string().optional(),     // 출처 링크
     waypoints: z.array(waypoint).min(2),
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date().optional(),
@@ -47,6 +50,9 @@ const places = defineCollection({
     hours: z.string().optional(),
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
+    coverNote: z.string().optional(),
+    coverCredit: z.string().optional(),
+    coverCreditUrl: z.string().optional(),
     publishedAt: z.coerce.date(),
     draft: z.boolean().default(false),
   }),
