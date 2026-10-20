@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import RouteCard from '../components/RouteCard.astro';
+import PlaceCard from '../components/PlaceCard.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { SITE } from '../site';
+
+const routes = (await getCollection('routes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const places = (await getCollection('places', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<Base>
+  <section class="hero">
+    <div class="wrap">
+      <h1>{SITE.tagline}</h1>
+      <p>경유지·거리·소요시간·휴게 포인트까지 지도 위에 정리했습니다. 이번 주말, 어디로 달릴지 여기서 고르세요.</p>
+      <a class="btn" href="/routes/">루트 둘러보기 →</a>
+      <a class="btn ghost" href="/places/">장소 보기</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>최근 올라온 루트</h2>
+        <a href="/routes/">전체 보기 →</a>
+      </div>
+      <div class="grid">
+        {routes.slice(0, 6).map((r) => <RouteCard route={r} />)}
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><AdSlot /></div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>라이더를 위한 장소</h2>
+        <a href="/places/">전체 보기 →</a>
+      </div>
+      <div class="grid">
+        {places.slice(0, 3).map((p) => <PlaceCard place={p} />)}
+      </div>
+    </div>
+  </section>
+</Base>
