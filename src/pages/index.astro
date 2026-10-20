@@ -1,49 +1,80 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import RouteCard from '../components/RouteCard.astro';
-import PlaceCard from '../components/PlaceCard.astro';
-import AdSlot from '../components/AdSlot.astro';
-import { SITE } from '../site';
+import { SITE, REGIONS, DIFFICULTY } from '../site';
+import { img } from '../lib/img';
 
 const routes = (await getCollection('routes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
-const places = (await getCollection('places', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const n = routes.length;
+const pad = (i: number) => String(i).padStart(2, '0');
+const heroBg = img(routes[0]?.data.cover, 1800, 60);
+const fmt = (min: number) => { const h = Math.floor(min / 60), m = min % 60; return h ? `${h}h${m ? ` ${m}m` : ''}` : `${m}m`; };
 ---
-<Base>
-  <section class="hero">
-    <div class="wrap">
-      <h1>{SITE.tagline}</h1>
-      <p>경유지·거리·소요시간·휴게 포인트까지 지도 위에 정리했습니다. 이번 주말, 어디로 달릴지 여기서 고르세요.</p>
-      <a class="btn" href="/routes/">루트 둘러보기 →</a>
-      <a class="btn ghost" href="/places/">장소 보기</a>
-    </div>
-  </section>
+<Base showcase image={img(routes[0]?.data.cover, 1200)}>
+  <div class="show" id="show">
+    <section class="slide intro" data-idx="0">
+      {heroBg && <div class="bg"><img src={heroBg} alt="" loading="eager" /></div>}
+      <div>
+        <span class="eyebrow">Motorcycle touring · Korea</span>
+        <h1>직접 달려본<br /><em>길</em>만 고릅니다</h1>
+        <p>경유지, 거리, 소요시간, 휴게 포인트까지 지도 위에. 라이더 카페를 중심으로 짠 수도권·강원 투어 코스 {n}개.</p>
+        <a class="btn" href="/routes/">전체 루트</a>
+        <a class="btn ghost" href="/places/">장소</a>
+      </div>
+      <div class="scroll-hint">SCROLL</div>
+    </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>최근 올라온 루트</h2>
-        <a href="/routes/">전체 보기 →</a>
-      </div>
-      <div class="grid">
-        {routes.slice(0, 6).map((r) => <RouteCard route={r} />)}
-      </div>
-    </div>
-  </section>
+    {routes.map((r, i) => {
+      const d = r.data;
+      const prev = routes[(i - 1 + n) % n].data.cover;
+      const next = routes[(i + 1) % n].data.cover;
+      return (
+        <section class="slide" data-idx={i + 1} id={`r-${pad(i + 1)}`}>
+          <div class="counter"><span class="num">{pad(i + 1)}</span><span class="of">/{pad(n)}</span></div>
+          {next && <img class="peek tr" src={img(next, 600, 60)} alt="" loading="lazy" />}
+          {prev && <img class="peek bl" src={img(prev, 600, 60)} alt="" loading="lazy" />}
+          <a class="photo" href={`/routes/${r.id}/`} aria-label={d.title}>
+            {d.cover && <img src={img(d.cover, 1200)} alt={d.title} loading={i < 2 ? 'eager' : 'lazy'} />}
+          </a>
+          <div class="cap">
+            <span class="eyebrow">{REGIONS[d.region]} · {DIFFICULTY[d.difficulty].label}</span>
+            <h2><a href={`/routes/${r.id}/`}>{d.title}</a></h2>
+            <p>{d.summary}</p>
+            <div class="meta">{d.distanceKm} km · {fmt(d.durationMin)} · {d.waypoints.length} stops</div>
+          </div>
+        </section>
+      );
+    })}
 
-  <div class="wrap"><AdSlot /></div>
+    <section class="slide intro" data-idx={n + 1}>
+      <div>
+        <span class="eyebrow">{SITE.nameEn}</span>
+        <h1>다음 주말,<br />어디로 <em>달릴까</em></h1>
+        <p>라이더 시점에서 정리한 카페·전망대·맛집과 모든 루트를 한 번에.</p>
+        <a class="btn" href="/routes/">루트 전체 보기</a>
+        <a class="btn ghost" href="/places/">장소 보기</a>
+      </div>
+    </section>
+  </div>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>라이더를 위한 장소</h2>
-        <a href="/places/">전체 보기 →</a>
-      </div>
-      <div class="grid">
-        {places.slice(0, 3).map((p) => <PlaceCard place={p} />)}
-      </div>
-    </div>
-  </section>
+  <nav class="pager" aria-label="루트 이동">
+    <a href="#show" title="처음" class="on"></a>
+    {routes.map((r, i) => <a href={`#r-${pad(i + 1)}`} title={r.data.title}></a>)}
+  </nav>
+
+  <script>
+    const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
+    const dots = [...document.querySelectorAll<HTMLElement>('.pager a')];
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-active');
+          const i = Number((e.target as HTMLElement).dataset.idx || 0);
+          dots.forEach((d, k) => d.classList.toggle('on', k === Math.min(i, dots.length - 1)));
+        }
+      }
+    }, { threshold: 0.45 });
+    slides.forEach((s) => io.observe(s));
+  </script>
 </Base>
