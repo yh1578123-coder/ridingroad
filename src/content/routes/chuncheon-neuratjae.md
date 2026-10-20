@@ -2,8 +2,8 @@
 title: "춘천 소양강댐·느랏재 — 닭갈비 먹고 느만장 거쳐 홍천강으로"
 summary: "소양강댐 정상에서 출발해 신북읍 닭갈비·막국수 벨트를 지나 춘천 라이더 성지 느만장에서 쉬고, 느랏재·가락재 고개를 넘어 홍천강변 하양목장에서 마무리하는 강원 입문 코스."
 region: gangwon
-distanceKm: 75
-durationMin: 120
+distanceKm: 55
+durationMin: 85
 difficulty: normal
 tags: ["고개", "라이더 카페", "닭갈비", "당일", "호수"]
 bestSeason: ["봄", "여름", "가을"]

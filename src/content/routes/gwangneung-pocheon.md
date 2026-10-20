@@ -2,8 +2,8 @@
 title: "광릉숲·포천 내촌 — 양주 라드에서 블랙레빗까지"
 summary: "양주 카페 라드에서 출발해 국립수목원 광릉숲길을 달리고, 포천 내촌 라이더 카페 블랙레빗에서 쉬었다가 송추가마골 갈비로 마무리하는 북부 반나절 코스."
 region: gyeonggi
-distanceKm: 65
-durationMin: 95
+distanceKm: 52
+durationMin: 80
 difficulty: easy
 tags: ["숲길", "라이더 카페", "반나절", "야간 가능", "입문"]
 bestSeason: ["봄", "여름", "가을"]

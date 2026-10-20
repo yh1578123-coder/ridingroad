@@ -2,8 +2,8 @@
 title: "양만장에서 축령산까지 — 북한강 45번 국도와 수동 와인딩"
 summary: "수도권 라이더 집결지 양평 만남의광장에서 출발해 조안 순두부, 북한강변 아유스페이스, 수동 에스쿠차르를 거쳐 축령산 잣나무숲 와인딩까지 잇는 북한강 동쪽 코스."
 region: gyeonggi
-distanceKm: 58
-durationMin: 100
+distanceKm: 57
+durationMin: 85
 difficulty: normal
 tags: ["강변", "와인딩", "라이더 카페", "당일", "카페"]
 bestSeason: ["봄", "여름", "가을"]

@@ -2,8 +2,8 @@
 title: "구룡령 넘어 속초 — 홍천 은행나무숲에서 동해 생선구이까지"
 summary: "홍천 내면 창촌에서 출발해 샘골휴게소, 10월에만 열리는 은행나무숲, 구룡령 정상을 지나 양양으로 내려와 속초 중앙시장 생선구이로 마무리하는 강원 고개 종주 코스."
 region: gangwon
-distanceKm: 85
-durationMin: 130
+distanceKm: 83
+durationMin: 125
 difficulty: hard
 tags: ["고개", "단풍", "바다", "1박 추천", "가을"]
 bestSeason: ["가을", "여름"]
