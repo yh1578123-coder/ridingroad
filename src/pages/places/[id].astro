@@ -5,6 +5,7 @@ import RouteMap from '../../components/RouteMap.astro';
 import RouteCard from '../../components/RouteCard.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import { REGIONS } from '../../site';
+import { img } from '../../lib/img';
 
 export async function getStaticPaths() {
   const places = await getCollection('places', ({ data }) => !data.draft);
@@ -19,14 +20,17 @@ const routes = (await getCollection('routes', ({ data }) => !data.draft))
   .filter((r) => r.data.waypoints.some((w) => w.place === place.id));
 const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전망', rest: '휴게', fuel: '주유', etc: '기타' };
 ---
-<Base title={d.title} description={d.summary} image={d.cover} type="article">
+<Base title={d.title} description={d.summary} image={img(d.cover, 1200)} type="article">
+  {d.cover && (
+    <section class="hero">
+      <img src={img(d.cover, 1800)} alt="" loading="eager" />
+      <div class="wrap"><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1></div>
+    </section>
+  )}
   <div class="wrap">
     <header class="route-head">
-      <div class="tags" style="margin-bottom:10px">
-        <span class="tag">{REGIONS[d.region]}</span><span class="tag">{CAT[d.category]}</span>
-      </div>
-      <h1>{d.title}</h1>
-      <p style="color:var(--ink-2);max-width:720px">{d.summary}</p>
+      {!d.cover && <><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1></>}
+      <p class="lead">{d.summary}</p>
     </header>
 
     <div class="route-layout">
