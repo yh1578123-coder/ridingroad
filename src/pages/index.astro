@@ -6,75 +6,130 @@ import { img } from '../lib/img';
 
 const routes = (await getCollection('routes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const places = (await getCollection('places', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 const n = routes.length;
 const pad = (i: number) => String(i).padStart(2, '0');
-const heroBg = img(routes[0]?.data.cover, 1800, 60);
-const fmt = (min: number) => { const h = Math.floor(min / 60), m = min % 60; return h ? `${h}h${m ? ` ${m}m` : ''}` : `${m}m`; };
+const fmt = (min: number) => { const h = Math.floor(min / 60), m = min % 60; return { h, m }; };
+
+// 이번 주 추천: 가장 최근 루트
+const pick = routes[0];
+const pd = pick?.data;
+const pt = pd ? fmt(pd.durationMin) : { h: 0, m: 0 };
+const firstWp = pd?.waypoints[0];
+const coord = firstWp ? `${firstWp.lat.toFixed(3)}° N  ${firstWp.lng.toFixed(3)}° E` : '';
+const heroArt = img(routes[1]?.data.cover ?? pd?.cover, 1400);
+const featureRoute = routes.find((r) => r.data.region === 'gangwon') ?? routes[1] ?? pick;
 ---
-<Base showcase image={img(routes[0]?.data.cover, 1200)}>
-  <div class="show" id="show">
-    <section class="slide intro" data-idx="0">
-      {heroBg && <div class="bg"><img src={heroBg} alt="" loading="eager" /></div>}
-      <div>
-        <span class="eyebrow">Motorcycle touring · Korea</span>
-        <h1>직접 달려본<br /><em>길</em>만 고릅니다</h1>
-        <p>경유지, 거리, 소요시간, 휴게 포인트까지 지도 위에. 라이더 카페를 중심으로 짠 수도권·강원 투어 코스 {n}개.</p>
-        <a class="btn" href="/routes/">전체 루트</a>
-        <a class="btn ghost" href="/places/">장소</a>
-      </div>
-      <div class="scroll-hint">SCROLL</div>
-    </section>
+<Base image={img(pd?.cover, 1200)}>
+  <section class="hero-ed">
+    <div class="wrap">
+      <h1 class="title"><span>RIDING</span><span>ROAD</span></h1>
+      <div class="grid">
+        <div>
+          <p class="sub">The road isn't the limit</p>
+          <p class="lead">경유지, 거리, 소요시간, 휴게 포인트까지 지도 위에. 라이더 카페를 중심으로 짜고 영업 여부까지 확인한 수도권·강원 투어 코스 {n}개.</p>
+          <a class="arrow-link" href="/routes/">루트 둘러보기</a>
 
-    {routes.map((r, i) => {
-      const d = r.data;
-      const prev = routes[(i - 1 + n) % n].data.cover;
-      const next = routes[(i + 1) % n].data.cover;
-      return (
-        <section class="slide" data-idx={i + 1} id={`r-${pad(i + 1)}`}>
-          <div class="counter"><span class="num">{pad(i + 1)}</span><span class="of">/{pad(n)}</span></div>
-          {next && <img class="peek tr" src={img(next, 600, 60)} alt="" loading="lazy" />}
-          {prev && <img class="peek bl" src={img(prev, 600, 60)} alt="" loading="lazy" />}
-          <a class="photo" href={`/routes/${r.id}/`} aria-label={d.title}>
-            {d.cover && <img src={img(d.cover, 1200)} alt={d.title} loading={i < 2 ? 'eager' : 'lazy'} />}
-          </a>
-          <div class="cap">
-            <span class="eyebrow">{REGIONS[d.region]} · {DIFFICULTY[d.difficulty].label}</span>
-            <h2><a href={`/routes/${r.id}/`}>{d.title}</a></h2>
-            <p>{d.summary}</p>
-            <div class="meta">{d.distanceKm} km · {fmt(d.durationMin)} · {d.waypoints.length} stops</div>
+          {pd && (
+            <div class="blue-card">
+              <span class="star">✦</span>
+              <span class="eyebrow">This week's route</span>
+              <h3><a href={`/routes/${pick.id}/`}>{pd.title}</a></h3>
+              <div class="stats">
+                <div><b>{pd.distanceKm}</b><span>km</span></div>
+                <div><b>{pt.h}</b><span>hrs</span></div>
+                <div><b>{pad(pt.m)}</b><span>mins</span></div>
+                <div><b>{pd.waypoints.length}</b><span>stops</span></div>
+              </div>
+              <a class="more" href={`/routes/${pick.id}/`}>Open</a>
+            </div>
+          )}
+          <div class="tag">Motorcycle touring · Korea</div>
+        </div>
+        <div class="art">
+          {heroArt && <img class="mono cutout" src={heroArt} alt="" loading="eager" />}
+        </div>
+      </div>
+      <div class="scroll-tab">Scroll to discover</div>
+
+      <div class="steps">
+        <div class="step"><span class="n">01</span><span class="t">루트<br />고르기</span></div>
+        <div class="step"><span class="n">02</span><span class="t">경유지·영업시간<br />확인</span></div>
+        <div class="step"><span class="n">03</span><span class="t">내비에 넣고<br />출발</span></div>
+        <div class="thumb">{routes[2]?.data.cover && <img class="mono" src={img(routes[2].data.cover, 600)} alt="" loading="lazy" />}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ed-section">
+    <div class="wrap">
+      <div class="ed-head">
+        <div>
+          <span class="eyebrow">All routes</span>
+          <h2>직접 달려보고<br />고른 길 {pad(n)}</h2>
+        </div>
+        <p>지역과 난이도로 고르세요. 모든 코스는 지도, 경유지, 휴게 포인트, 영업 확인 날짜가 함께 정리되어 있습니다.</p>
+      </div>
+      <div class="route-list">
+        {routes.map((r, i) => {
+          const d = r.data; const t = fmt(d.durationMin);
+          return (
+            <a class="route-row" href={`/routes/${r.id}/`}>
+              <span class="n">{pad(i + 1)}</span>
+              <div>
+                <h3>{d.title}</h3>
+                <div class="meta">{REGIONS[d.region]} · {DIFFICULTY[d.difficulty].label} · <b>{d.distanceKm} km</b> · {t.h}h {pad(t.m)}m · {d.waypoints.length} stops</div>
+              </div>
+              <div class="pic">{d.cover && <img class="mono" src={img(d.cover, 700)} alt="" loading="lazy" />}</div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="feature">
+      <div>
+        <span class="eyebrow">Our mission</span>
+        <h2>지도 앱이 알려주지 않는 것을<br />라이더 시점에서 기록합니다</h2>
+        <p>어느 코너에 모래가 쌓이는지, 어디에 바이크를 세우기 편한지, 몇 시에 가야 안 막히는지. 라이더 카페를 중심으로 코스를 짜고, 올리기 전에 영업 여부를 다시 확인합니다.</p>
+        <a class="arrow-link" href="/about/">더 알아보기</a>
+        {firstWp && (
+          <div class="caption">
+            {pd?.cover && <img class="mono" src={img(pd.cover, 200)} alt="" loading="lazy" />}
+            <span class="coord">{coord}</span>
+            <span>◎</span>
           </div>
-        </section>
-      );
-    })}
-
-    <section class="slide intro" data-idx={n + 1}>
-      <div>
-        <span class="eyebrow">{SITE.nameEn}</span>
-        <h1>다음 주말,<br />어디로 <em>달릴까</em></h1>
-        <p>라이더 시점에서 정리한 카페·전망대·맛집과 모든 루트를 한 번에.</p>
-        <a class="btn" href="/routes/">루트 전체 보기</a>
-        <a class="btn ghost" href="/places/">장소 보기</a>
+        )}
       </div>
-    </section>
-  </div>
+      <div class="blue-img">
+        {featureRoute?.data.cover && <img class="mono" src={img(featureRoute.data.cover, 1000)} alt="" loading="lazy" />}
+      </div>
+      <div class="feat-list">
+        <div class="feat-item"><div class="ico">◈</div><h3>Rider cafés first</h3><p>라이더 성지로 불리는 카페를 기준점으로 코스를 설계합니다.</p></div>
+        <div class="feat-item"><div class="ico">◎</div><h3>Verified open</h3><p>올리기 전 최근 후기와 지도 영업 정보를 교차 확인하고 날짜를 적습니다.</p></div>
+        <div class="feat-item"><div class="ico">↗</div><h3>Nav-ready</h3><p>경유지 순서 그대로 내비게이션에 넣으면 끝. 좌표까지 제공합니다.</p></div>
+      </div>
+    </div>
+  </section>
 
-  <nav class="pager" aria-label="루트 이동">
-    <a href="#show" title="처음" class="on"></a>
-    {routes.map((r, i) => <a href={`#r-${pad(i + 1)}`} title={r.data.title}></a>)}
-  </nav>
-
-  <script>
-    const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
-    const dots = [...document.querySelectorAll<HTMLElement>('.pager a')];
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-active');
-          const i = Number((e.target as HTMLElement).dataset.idx || 0);
-          dots.forEach((d, k) => d.classList.toggle('on', k === Math.min(i, dots.length - 1)));
-        }
-      }
-    }, { threshold: 0.45 });
-    slides.forEach((s) => io.observe(s));
-  </script>
+  <section class="ed-section wrap" style="padding-bottom: 20px">
+    <div class="ed-head">
+      <div>
+        <span class="eyebrow">Places</span>
+        <h2>라이더를 위한 장소</h2>
+      </div>
+      <a class="arrow-link" href="/places/">전체 보기</a>
+    </div>
+    <div class="places-strip">
+      {places.slice(0, 4).map((p) => (
+        <a href={`/places/${p.id}/`}>
+          <span class="k">{REGIONS[p.data.region]}</span>
+          <div><h3>{p.data.title}</h3><div class="s">{p.data.summary}</div></div>
+        </a>
+      ))}
+    </div>
+  </section>
 </Base>
