@@ -126,6 +126,7 @@ const featureRoute = routes.find((r) => r.data.region === 'gangwon') ?? routes[1
     <div class="places-strip">
       {places.slice(0, 4).map((p) => (
         <a href={`/places/${p.id}/`}>
+          {p.data.cover && <div class="ed-photo ph"><img src={img(p.data.cover, 500)} alt="" loading="lazy" /></div>}
           <span class="k">{REGIONS[p.data.region]}</span>
           <div><h3>{p.data.title}</h3><div class="s">{p.data.summary}</div></div>
         </a>
