@@ -22,14 +22,16 @@ const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전
 ---
 <Base title={d.title} description={d.summary} image={img(d.cover, 1200)} type="article">
   {d.cover && (
-    <section class="hero">
-      <img src={img(d.cover, 1800)} alt="" loading="eager" />
-      <div class="wrap"><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1></div>
-    </section>
+    <div class="wrap">
+      <section class="hero">
+        <div class="copy"><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1></div>
+        <img class="mono cutout" src={img(d.cover, 1400)} alt="" loading="eager" />
+      </section>
+    </div>
   )}
   <div class="wrap">
     <header class="route-head">
-      {!d.cover && <><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1></>}
+      {!d.cover && <><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1 style="font-size:clamp(1.6rem,3.5vw,2.6rem)">{d.title}</h1></>}
       <p class="lead">{d.summary}</p>
     </header>
 
@@ -47,7 +49,7 @@ const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전
             {d.hours && <><dt>시간</dt><dd>{d.hours}</dd></>}
           </dl>
           <p style="margin:12px 0 0;font-size:.88rem">
-            <a style="color:var(--accent-ink);font-weight:600" href={`https://map.kakao.com/link/map/${encodeURIComponent(d.title)},${d.lat},${d.lng}`} target="_blank" rel="noopener">카카오맵에서 열기 ↗</a>
+            <a style="color:var(--blue);font-weight:600" href={`https://map.kakao.com/link/map/${encodeURIComponent(d.title)},${d.lat},${d.lng}`} target="_blank" rel="noopener">카카오맵에서 열기 ↗</a>
           </p>
         </div>
         <AdSlot shape="rect" />
