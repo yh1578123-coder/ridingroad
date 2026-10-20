@@ -23,17 +23,27 @@ const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전
 <Base title={d.title} description={d.summary} image={img(d.cover, 1200)} type="article">
   {d.cover && (
     <div class="wrap">
-      <section class="hero">
-        <div class="copy"><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1></div>
-        <img class="mono cutout" src={img(d.cover, 1400)} alt="" loading="eager" />
+      <section class="hero" style="align-items:center;padding-bottom:28px">
+        <div class="copy"><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1>{d.title}</h1><p class="lead" style="color:var(--ink-2);margin-top:14px">{d.summary}</p>{d.address && <p class="eyebrow muted" style="margin:0">{d.address}</p>}</div>
+        <figure>
+          <div class="ed-photo"><img src={img(d.cover, 1280)} alt={d.coverNote ?? d.title} loading="eager" /><span class="no">{REGIONS[d.region]}</span></div>
+          {(d.coverNote || d.coverCredit) && (
+            <figcaption class="figcap">
+              <span class="note">{d.coverNote}</span>
+              {d.coverCredit && (d.coverCreditUrl ? <a href={d.coverCreditUrl} target="_blank" rel="noopener">{d.coverCredit}</a> : <span>{d.coverCredit}</span>)}
+            </figcaption>
+          )}
+        </figure>
       </section>
     </div>
   )}
   <div class="wrap">
-    <header class="route-head">
-      {!d.cover && <><span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1 style="font-size:clamp(1.6rem,3.5vw,2.6rem)">{d.title}</h1></>}
-      <p class="lead">{d.summary}</p>
-    </header>
+    {!d.cover && (
+      <header class="route-head">
+        <span class="eyebrow">{REGIONS[d.region]} · {CAT[d.category]}</span><h1 style="font-size:clamp(1.6rem,3.5vw,2.6rem)">{d.title}</h1>
+        <p class="lead">{d.summary}</p>
+      </header>
+    )}
 
     <div class="route-layout">
       <div>
