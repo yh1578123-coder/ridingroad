@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { REGIONS } from '../site';
+import { img } from '../lib/img';
 interface Props { place: CollectionEntry<'places'> }
 const { place } = Astro.props;
 const d = place.data;
@@ -8,7 +9,7 @@ const CAT: Record<string, string> = { cafe: '카페', food: '식사', view: '전
 ---
 <a class="card" href={`/places/${place.id}/`} data-region={d.region}>
   <div class="thumb">
-    {d.cover && <img src={d.cover} alt="" loading="lazy" />}
+    {d.cover && <img src={img(d.cover, 800)} alt="" loading="lazy" />}
     <span class="region">{REGIONS[d.region]} · {CAT[d.category]}</span>
   </div>
   <div class="body">
