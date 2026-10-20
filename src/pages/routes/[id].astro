@@ -5,6 +5,7 @@ import RouteMap from '../../components/RouteMap.astro';
 import RouteCard from '../../components/RouteCard.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import { REGIONS, DIFFICULTY, WAYPOINT_TYPES, SITE } from '../../site';
+import { img } from '../../lib/img';
 
 export async function getStaticPaths() {
   const routes = await getCollection('routes', ({ data }) => !data.draft);
@@ -13,6 +14,8 @@ export async function getStaticPaths() {
 
 const { route } = Astro.props;
 const d = route.data;
+const ordered = (await getCollection('routes', ({ data }) => !data.draft)).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const idx = String(ordered.findIndex((r) => r.id === route.id) + 1).padStart(2, '0');
 const { Content } = await render(route);
 
 const hours = Math.floor(d.durationMin / 60);
@@ -38,23 +41,30 @@ const ld = {
   publisher: { '@type': 'Organization', name: SITE.name },
 };
 ---
-<Base title={d.title} description={d.summary} image={d.cover} type="article">
+<Base title={d.title} description={d.summary} image={img(d.cover, 1200)} type="article">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)} />
+
+  {d.cover && (
+    <section class="hero">
+      <img src={img(d.cover, 1800)} alt="" loading="eager" />
+      <div class="idx">{idx}</div>
+      <div class="wrap">
+        <span class="eyebrow">{REGIONS[d.region]} · {DIFFICULTY[d.difficulty].label} · {d.distanceKm} km</span>
+        <h1>{d.title}</h1>
+      </div>
+    </section>
+  )}
 
   <div class="wrap">
     <header class="route-head">
-      <div class="tags" style="margin-bottom:10px">
-        <span class="tag">{REGIONS[d.region]}</span>
-        <span class:list={['diff', d.difficulty]}>{DIFFICULTY[d.difficulty].label}</span>
-        {d.roundTrip && <span class="tag">순환 코스</span>}
-      </div>
-      <h1>{d.title}</h1>
-      <p style="color:var(--ink-2);max-width:720px">{d.summary}</p>
+      {!d.cover && <h1>{d.title}</h1>}
+      <p class="lead">{d.summary}</p>
       <div class="meta">
-        <span>총 거리 <b>{d.distanceKm} km</b></span>
-        <span>주행 시간 <b>{duration}</b></span>
-        <span>경유지 <b>{d.waypoints.length}곳</b></span>
-        {d.bestSeason.length > 0 && <span>추천 계절 <b>{d.bestSeason.join(' · ')}</b></span>}
+        <span><b>{d.distanceKm}</b> km</span>
+        <span><b>{duration}</b> 주행</span>
+        <span><b>{d.waypoints.length}</b> 경유지</span>
+        {d.bestSeason.length > 0 && <span><b>{d.bestSeason.join(' · ')}</b> 추천 계절</span>}
+        {d.roundTrip && <span><b>순환</b> 코스</span>}
       </div>
     </header>
 
